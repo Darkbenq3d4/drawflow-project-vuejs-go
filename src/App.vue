@@ -1,6 +1,11 @@
 <template>
-  <sidebar-menu :menu="menu" />
-  <div id="drawflow"></div>
+    <div id="view" :class="[{ collapsed: collapsed }]">    
+      <div id="drawflow" />
+    <sidebar-menu 
+      :menu="menu"
+      @update:collapsed="onCollapsed"
+      />
+  </div>
 </template>
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component';
@@ -14,6 +19,8 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
     SidebarMenu
   }})
 export default class App extends Vue {
+
+  collapsed = false;
   
   data() {
     return {
@@ -27,9 +34,16 @@ export default class App extends Vue {
           title: 'Sumar',
           icon: 'fas fa-plus-circle'
         }
-      ]
+      ],
+      collapsed: false,
     }
   }
+
+  onCollapsed(c:boolean) {
+    console.log("onCollapse");
+    this.collapsed = c;
+  }
+
   mounted() {
     this.$nextTick(() => {
       let id = document.getElementById("drawflow") as HTMLElement;
@@ -66,11 +80,15 @@ export default class App extends Vue {
 <style>
 #drawflow {
   height: 95vh;
-  width: 67vw;
-  margin-left: 30vw;
-
-  position: relative;
+  width: 100%;
   border: 1px solid black;
 }
+#view {
+  padding-left: 350px;
+}
+#view.collapsed{
+  padding-left: 65px;
+}
+
 
 </style>
